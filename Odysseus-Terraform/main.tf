@@ -49,15 +49,14 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
     allow_blob_public_access    = "false"
     access_tier                 = "Hot"
     min_tls_version             = "TLS1_2"
-
-    # blob_properties {
-    #     delete_retention_policy {
-    #         days = 7
-    #     }
-    #     container_delete_retention_policy {
-    #         days = 7
-    #     }
-    # }
+    blob_properties {
+        # delete_retention_policy {
+        #     days = 7
+        # }
+        # container_delete_retention_policy {
+        #     days = 7
+        # }
+    }
 
     identity {
         type = "SystemAssigned"
@@ -70,7 +69,7 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
 
 # Create container
 resource "azurerm_storage_container" "odysseus-container" {
-  name                 = "odysseus-container-${var.sourceBranchName}"
+  name                 = "photos"
   storage_account_name = azurerm_storage_account.odysseus-storageaccount.name
   container_access_type = "private"
 }
