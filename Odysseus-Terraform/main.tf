@@ -61,15 +61,7 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
 
     identity {
         type = "SystemAssigned"
-    }
-
-    logging {
-        delete = enabled
-        read = disabled
-        retention_policy_days = 7
-        version = 2
-        write = disabled
-    }
+    }    
 
     tags = {
         Odysseus = azurerm_resource_group.odysseus-group.tags.Odysseus
