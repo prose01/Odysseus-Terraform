@@ -51,8 +51,12 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
     min_tls_version             = "TLS1_2"
 
     blob_properties {
-        delete_retention_policy = 7
-        container_delete_retention_policy = 7
+        delete_retention_policy {
+            days = 7
+        }
+        container_delete_retention_policy {
+            days = 7
+        }
     }
 
     identity {
@@ -60,8 +64,11 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
     }
 
     logging {
-        delete = "true"
+        delete = enabled
+        read = disabled
         retention_policy_days = 7
+        version = 2
+        write = disabled
     }
 
     tags = {
