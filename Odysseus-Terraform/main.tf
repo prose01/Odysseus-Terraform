@@ -15,6 +15,16 @@ provider "azurerm" {
     features {}
 }
 
+# Generate random text for a unique name
+resource "random_id" "randomId" {
+    keepers = {
+        # Generate a new ID only when a new resource group is defined
+        resource_group = azurerm_resource_group.myterraformgroup.name
+    }
+
+    byte_length = 8
+}
+
 # Create resource group
 resource "azurerm_resource_group" "odysseus-group" {
     name     = "Odysseus-${var.sourceBranchName}"
@@ -27,11 +37,32 @@ resource "azurerm_resource_group" "odysseus-group" {
 
 # Create storage account
 resource "azurerm_storage_account" "odysseus-storageaccount" {
-    name                        = "Odysseus-${var.sourceBranchName}"
+    # name                        = "Odysseus-${var.sourceBranchName}"
+    name                        = "${random_id.randomId.hex}${var.sourceBranchName}"
     resource_group_name         = azurerm_resource_group.odysseus-group.name
     location                    = azurerm_resource_group.odysseus-group.location
-    account_replication_type    = "${var.storage_replication_type}"
-    account_tier                = "${var.storage_account_tier}"
+    account_replication_type    = "RAGRS"
+    account_tier                = "Standard"
+    account_kind                = "StorageV2"
+    is_hns_enabled              = "true"
+    enable_https_traffic_only   = "true"
+    allow_blob_public_access    = "false"
+    access_tier                 = "Hot"
+    min_tls_version             = "TLS1_2"
+
+    blob_properties {
+        delete_retention_policy = 7
+        container_delete_retention_policy = 7
+    }
+
+    identity {
+        type = "SystemAssigned"
+    }
+
+    logging {
+        delete = "true"
+        retention_policy_days = 7
+    }
 
     tags = {
         Odysseus = azurerm_resource_group.odysseus-group.tags.Odysseus
@@ -42,4 +73,5 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
 resource "azurerm_storage_container" "odysseus-container" {
   name                 = "Odysseus-container-${var.sourceBranchName}"
   storage_account_name = azurerm_storage_account.odysseus-storageaccount.name
+  container_access_type = "private"
 }
