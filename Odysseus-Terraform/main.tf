@@ -50,9 +50,6 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
     access_tier                 = "Hot"
     min_tls_version             = "TLS1_2"
     blob_properties {
-        # delete_retention_policy {
-        #     days = 7
-        # }
         container_delete_retention_policy {
             days = 7
         }
