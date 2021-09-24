@@ -36,7 +36,7 @@ resource "azurerm_resource_group" "odysseus-group" {
 }
 
 # Create storage account
-resource "azurerm_storage_account" "odysseusstorageaccount" {
+resource "azurerm_storage_account" "odysseus-storageaccount" {
     # name                        = "Odysseus-${var.sourceBranchName}"
     name                        = "${random_id.randomId.hex}${var.sourceBranchName}"
     resource_group_name         = azurerm_resource_group.odysseus-group.name
@@ -50,14 +50,14 @@ resource "azurerm_storage_account" "odysseusstorageaccount" {
     access_tier                 = "Hot"
     min_tls_version             = "TLS1_2"
 
-    blob_properties {
-        delete_retention_policy {
-            days = 7
-        }
-        container_delete_retention_policy {
-            days = 7
-        }
-    }
+    # blob_properties {
+    #     delete_retention_policy {
+    #         days = 7
+    #     }
+    #     container_delete_retention_policy {
+    #         days = 7
+    #     }
+    # }
 
     identity {
         type = "SystemAssigned"
@@ -70,7 +70,7 @@ resource "azurerm_storage_account" "odysseusstorageaccount" {
 
 # Create container
 resource "azurerm_storage_container" "odysseus-container" {
-  name                 = "odysseus-container-${var.sourceBranchName}"
-  storage_account_name = azurerm_storage_account.odysseusstorageaccount.name
+  name                 = "Odysseus-container-${var.sourceBranchName}"
+  storage_account_name = azurerm_storage_account.odysseus-storageaccount.name
   container_access_type = "private"
 }
