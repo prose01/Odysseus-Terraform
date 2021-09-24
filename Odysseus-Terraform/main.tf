@@ -70,7 +70,7 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
 
 # Create container
 resource "azurerm_storage_container" "odysseus-container" {
-  name                 = "Odysseus-container-${var.sourceBranchName}"
+  name                 = "odysseus-container-${var.sourceBranchName}"
   storage_account_name = azurerm_storage_account.odysseus-storageaccount.name
   container_access_type = "private"
 }
