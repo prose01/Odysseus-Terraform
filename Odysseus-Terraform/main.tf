@@ -19,7 +19,7 @@ provider "azurerm" {
 resource "random_id" "randomId" {
     keepers = {
         # Generate a new ID only when a new resource group is defined
-        resource_group = azurerm_resource_group.myterraformgroup.name
+        resource_group = azurerm_resource_group.odysseus-group.name
     }
 
     byte_length = 8
