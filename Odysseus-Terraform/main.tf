@@ -36,8 +36,8 @@ resource "azurerm_resource_group" "odysseus-group" {
 }
 
 # Create storage account
+resource "azurerm_storage_account" "odysseusstorageaccount" {
     # name                        = "Odysseus-${var.sourceBranchName}"
-resource "azurerm_storage_account" "odysseus-storageaccount" {
     name                        = "${random_id.randomId.hex}${var.sourceBranchName}"
     resource_group_name         = azurerm_resource_group.odysseus-group.name
     location                    = azurerm_resource_group.odysseus-group.location
@@ -71,6 +71,6 @@ resource "azurerm_storage_account" "odysseus-storageaccount" {
 # Create container
 resource "azurerm_storage_container" "odysseus-container" {
   name                 = "odysseus-container-${var.sourceBranchName}"
-  storage_account_name = azurerm_storage_account.odysseus-storageaccount.name
+  storage_account_name = azurerm_storage_account.odysseusstorageaccount.name
   container_access_type = "private"
 }
