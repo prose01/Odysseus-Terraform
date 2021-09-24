@@ -36,8 +36,8 @@ resource "azurerm_resource_group" "odysseus-group" {
 }
 
 # Create storage account
-resource "azurerm_storage_account" "odysseus-storageaccount" {
     # name                        = "Odysseus-${var.sourceBranchName}"
+resource "azurerm_storage_account" "odysseus-storageaccount" {
     name                        = "${random_id.randomId.hex}${var.sourceBranchName}"
     resource_group_name         = azurerm_resource_group.odysseus-group.name
     location                    = azurerm_resource_group.odysseus-group.location
